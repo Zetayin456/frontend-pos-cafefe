@@ -2,7 +2,6 @@
 package sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity;
 
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -57,10 +56,7 @@ public class TipoProducto implements Serializable {
     @Column(name = "activo")
     private Boolean activo;
 
-    @OneToMany(
-        cascade = CascadeType.ALL,
-        mappedBy = "idTipoProducto"
-    )
+    @OneToMany(mappedBy = "idTipoProducto")
     private List<ProductoTipoProducto> productoTipoProductoList;
 
     public TipoProducto() {

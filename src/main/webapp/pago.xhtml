@@ -20,7 +20,7 @@
                 </h:panelGrid>
                 
                 <p:commandButton value="Guardar" actionListener="#{pagoBean.guardar()}" 
-                                 update="frmPago :messages" icon="pi pi-save" />
+                                 update="frmPago" icon="pi pi-save" />
                 <p:commandButton value="Nuevo" action="#{pagoBean.nuevoRegistro()}" update="frmPago" immediate="true" icon="pi pi-plus" />
             </p:panel>
 
@@ -38,7 +38,7 @@
                 </p:column>
                 <p:column headerText="Acciones">
                     <p:commandButton icon="pi pi-pencil" title="Editar" action="#{pagoBean.seleccionar(pg)}" update="frmPago" />
-                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{pagoBean.eliminar(pg)}" update="frmPago :messages">
+                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{pagoBean.eliminar(pg)}" update="frmPago">
                         <p:confirm header="Confirmar eliminación" message="¿Desea eliminar este pago?" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </p:column>

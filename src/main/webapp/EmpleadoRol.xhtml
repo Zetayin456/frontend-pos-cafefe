@@ -18,11 +18,7 @@
 
         <h:form id="frmEmpleadoRol">
 
-            <p:messages id="messages"
-                        showDetail="true"
-                        closable="true">
-                <p:autoUpdate />
-            </p:messages>
+
 
             <!-- FORMULARIO -->
             <p:card style="max-width: 1000px; margin: 0 auto;">
@@ -171,16 +167,15 @@
 
                         <p:commandButton
                             icon="pi pi-ban"
-                            title="Desactivar asignación"
-                            action="#{empleadoRolFrm.desactivar(er)}"
+                            title="Eliminar asignación"
+                            action="#{empleadoRolFrm.eliminar(er)}"
                             process="@this"
                             update=":frmEmpleadoRol"
-                            disabled="#{er.activo ne true}"
                             styleClass="ui-button-danger">
 
                             <p:confirm
-                                header="Confirmar desactivación"
-                                message="¿Deseas desactivar esta asignación?"
+                                header="Confirmar eliminación"
+                                message="¿Deseas eliminar esta asignación?"
                                 icon="pi pi-exclamation-triangle" />
 
                         </p:commandButton>
@@ -198,7 +193,7 @@
                              width="350">
 
                 <p:commandButton
-                    value="Sí, desactivar"
+                    value="Sí, eliminar"
                     type="button"
                     styleClass="ui-confirmdialog-yes ui-button-danger"
                     icon="pi pi-check" />

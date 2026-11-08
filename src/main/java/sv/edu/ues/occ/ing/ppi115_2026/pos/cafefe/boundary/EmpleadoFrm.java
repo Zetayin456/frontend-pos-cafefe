@@ -133,9 +133,7 @@ public class EmpleadoFrm implements Serializable {
         }
 
         try {
-            // Eliminación lógica: se conserva el registro.
-            empleado.setActivo(false);
-            empleadoRepository.edit(empleado);
+            empleadoRepository.remove(empleado);
 
             if (registroSeleccionado != null
                     && empleado.getIdEmpleado().equals(
@@ -148,14 +146,14 @@ public class EmpleadoFrm implements Serializable {
             mostrarMensaje(
                     FacesMessage.SEVERITY_INFO,
                     "Éxito",
-                    "Empleado desactivado correctamente."
+                    "Empleado eliminado correctamente."
             );
 
         } catch (Exception e) {
             mostrarMensaje(
                     FacesMessage.SEVERITY_ERROR,
                     "Error",
-                    "No se pudo desactivar el empleado."
+                    "No se pudo eliminar el empleado. Puede estar asociado a otros registros."
             );
         }
     }

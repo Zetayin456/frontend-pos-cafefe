@@ -1,7 +1,6 @@
 package sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity;
 
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -58,7 +57,7 @@ private BigDecimal precioSugerido;
     @OneToMany(mappedBy = "idProducto", fetch = FetchType.LAZY)
     private List<DescuentoProducto> descuentoProductoList;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProducto")
+  @OneToMany(mappedBy = "idProducto")
 private List<ProductoTipoProducto> productoTipoProductoList;
 
     public Producto() {

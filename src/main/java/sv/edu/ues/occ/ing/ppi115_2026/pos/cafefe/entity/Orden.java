@@ -1,7 +1,6 @@
 package sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity;
 
 import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,7 +41,7 @@ public class Orden implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private EmpleadoRol idEmpleadoRol;
 
-    @OneToMany(mappedBy = "idOrden", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "idOrden", fetch = FetchType.LAZY)
 private List<OrdenProducto> ordenProductoList;
 
     public Orden() {

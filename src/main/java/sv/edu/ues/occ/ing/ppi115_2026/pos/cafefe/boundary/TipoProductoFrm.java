@@ -138,14 +138,12 @@ public class TipoProductoFrm implements Serializable {
         }
 
         try {
-            // Eliminación lógica: conserva el registro y sus relaciones.
-            tipoProducto.setActivo(false);
-            tipoProductoRepository.edit(tipoProducto);
+            tipoProductoRepository.remove(tipoProducto);
 
             mostrarMensaje(
                     FacesMessage.SEVERITY_INFO,
                     "Éxito",
-                    "Tipo de producto desactivado correctamente."
+                    "Tipo de producto eliminado correctamente."
             );
 
             if (registroSeleccionado != null
@@ -160,7 +158,7 @@ public class TipoProductoFrm implements Serializable {
             mostrarMensaje(
                     FacesMessage.SEVERITY_ERROR,
                     "Error",
-                    "No se pudo desactivar el tipo de producto."
+                    "No se pudo eliminar el tipo de producto. Puede estar asociado a productos."
             );
         }
     }

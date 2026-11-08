@@ -32,7 +32,7 @@
                 <br/>
                 <p:commandButton value="Guardar"
                                  actionListener="#{tipoCaracteristicaBean.guardar()}"
-                                 update=":frmTabla:dtTipoCaracteristica :messages"
+                                 update=":frmTabla:dtTipoCaracteristica"
                                  icon="pi pi-check" />
                 <p:commandButton value="Limpiar" actionListener="#{tipoCaracteristicaBean.limpiar()}" update="frmNuevo" icon="pi pi-eraser" styleClass="ui-button-secondary" />
             </p:panel>
@@ -78,7 +78,7 @@
                                          process="@this">
                             <f:setPropertyActionListener value="#{row}" target="#{tipoCaracteristicaBean.registro}" />
                         </p:commandButton>
-                        <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{tipoCaracteristicaBean.eliminar(row)}" update=":frmTabla:dtTipoCaracteristica :messages">
+                        <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{tipoCaracteristicaBean.eliminar(row)}" update=":frmTabla:dtTipoCaracteristica">
                             <p:confirm header="Confirmar eliminación" message="¿Desea eliminar este tipo de característica?" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                     </p:column>

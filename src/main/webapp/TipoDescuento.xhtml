@@ -67,7 +67,7 @@
                 </p:column>
                 <p:column headerText="Acciones">
                     <p:commandButton icon="pi pi-pencil" title="Editar" action="#{tipoDescuentoFrm.seleccionar(item)}" update=":frmNuevo" process="@this" />
-                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{tipoDescuentoFrm.eliminar(item)}" update=":frmTabla:tblTipoDescuento :messages">
+                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{tipoDescuentoFrm.eliminar(item)}" update=":frmTabla:tblTipoDescuento">
                         <p:confirm header="Confirmar eliminación" message="¿Desea eliminar este tipo de descuento?" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </p:column>

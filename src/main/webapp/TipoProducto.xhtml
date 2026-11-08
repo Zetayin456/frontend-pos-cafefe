@@ -17,9 +17,6 @@
         <h:form id="frmNuevo">
             <p:panel header="Datos del tipo de producto" style="margin-top: 1rem;">
 
-                <p:messages id="formMessages"
-                            showDetail="true"
-                            closable="true" />
 
                 <h:panelGrid columns="2"
                              cellpadding="6">
@@ -56,9 +53,7 @@
                                      icon="pi pi-check"
                                      actionListener="#{tipoProductoFrm.guardar()}"
                                      process="@form"
-                                     update=":frmTabla:tblTipoProducto
-                                             :frmTabla:messages
-                                             formMessages" />
+                                     update=":frmTabla:tblTipoProducto" />
 
                     <p:commandButton value="Cancelar"
                                      actionListener="#{tipoProductoFrm.nuevoRegistro()}"
@@ -73,9 +68,6 @@
         </h:form>
 
         <h:form id="frmTabla">
-            <p:messages id="messages"
-                        showDetail="true"
-                        closable="true" />
 
             <p:dataTable id="tblTipoProducto"
                          var="tp"
@@ -110,15 +102,14 @@
                                      style="margin-right: 5px;" />
 
                     <p:commandButton icon="pi pi-trash"
-                                     title="Desactivar"
+                                     title="Eliminar"
                                      actionListener="#{tipoProductoFrm.eliminar(tp)}"
                                      process="@this"
-                                     update="tblTipoProducto messages"
-                                     disabled="#{not tp.activo}"
+                                     update="tblTipoProducto"
                                      styleClass="ui-button-danger">
 
-                        <p:confirm header="Confirmar desactivación"
-                                   message="¿Deseas desactivar este tipo de producto?"
+                        <p:confirm header="Confirmar eliminación"
+                                   message="¿Deseas eliminar este tipo de producto? Si tiene productos asociados, no se podrá eliminar."
                                    icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
 

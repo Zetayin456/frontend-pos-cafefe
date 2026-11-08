@@ -130,7 +130,7 @@ public class ProductoFrm implements Serializable {
         }
     }
 
-    public void eliminarLogicamente(Producto producto) {
+    public void eliminar(Producto producto) {
         if (producto == null || producto.getIdProducto() == null) {
             mensaje(FacesMessage.SEVERITY_WARN,
                     "Aviso", "Selecciona un producto válido.");
@@ -138,10 +138,7 @@ public class ProductoFrm implements Serializable {
         }
 
         try {
-            // No se borra de la base de datos.
-            // Solo se marca como inactivo.
-            producto.setActivo(false);
-            productoRepository.edit(producto);
+            productoRepository.remove(producto);
 
             if (registroSeleccionado != null
                     && producto.getIdProducto().equals(
@@ -152,12 +149,12 @@ public class ProductoFrm implements Serializable {
             cargarDatos();
 
             mensaje(FacesMessage.SEVERITY_INFO,
-                    "Éxito", "Producto desactivado correctamente.");
+                    "Éxito", "Producto eliminado correctamente.");
 
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al desactivar producto", e);
+            LOGGER.log(Level.SEVERE, "Error al eliminar producto", e);
             mensaje(FacesMessage.SEVERITY_ERROR,
-                    "Error", "No se pudo desactivar el producto.");
+                    "Error", "No se pudo eliminar el producto. Puede estar asociado a otros registros.");
         }
     }
 

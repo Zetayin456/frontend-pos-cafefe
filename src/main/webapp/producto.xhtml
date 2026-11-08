@@ -16,11 +16,7 @@
 
         <h:form id="frmProducto">
 
-            <p:messages id="messages"
-                        showDetail="true"
-                        closable="true">
-                <p:autoUpdate />
-            </p:messages>
+
 
             <p:panel header="Formulario de Producto">
 
@@ -131,16 +127,15 @@
 
                         <p:commandButton
                             icon="pi pi-trash"
-                            title="Desactivar"
-                            action="#{productoFrm.eliminarLogicamente(p)}"
+                            title="Eliminar"
+                            action="#{productoFrm.eliminar(p)}"
                             process="@this"
                             update=":frmProducto"
-                            disabled="#{p.activo ne true}"
                             styleClass="ui-button-danger">
 
                             <p:confirm
-                                header="Confirmar desactivación"
-                                message="¿Deseas desactivar este producto?"
+                                header="Confirmar eliminación"
+                                message="¿Deseas eliminar este producto? Si tiene registros asociados, no se podrá eliminar."
                                 icon="pi pi-exclamation-triangle" />
 
                         </p:commandButton>
@@ -157,7 +152,7 @@
                              responsive="true"
                              width="350">
 
-                <p:commandButton value="Sí, desactivar"
+                <p:commandButton value="Sí, eliminar"
                                  type="button"
                                  styleClass="ui-confirmdialog-yes ui-button-danger"
                                  icon="pi pi-check" />

@@ -14,9 +14,6 @@
 
     <ui:define name="contenido">
 
-        <p:messages id="messagesRol"
-                    showDetail="true"
-                    closable="true" />
 
         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
 
@@ -30,9 +27,6 @@
 
                     <h:form id="frmNuevoRol">
 
-                        <p:messages id="formMessagesRol"
-                                    showDetail="true"
-                                    closable="true" />
 
                         <div style="display: flex; flex-direction: column; gap: 15px;">
 
@@ -73,7 +67,7 @@
                                 <p:commandButton value="Guardar"
                                                  actionListener="#{rolFrm.guardar()}"
                                                  process="@form"
-                                                 update=":frmTablaRol:tblRol :messagesRol formMessagesRol"
+                                                 update=":frmTablaRol:tblRol"
                                                  icon="pi pi-save"
                                                  styleClass="ui-button-info"
                                                  style="flex: 1;" />
@@ -137,15 +131,14 @@
                                                  style="margin-right: 5px;" />
 
                                 <p:commandButton icon="pi pi-trash"
-                                                 title="Desactivar"
+                                                 title="Eliminar"
                                                  actionListener="#{rolFrm.eliminar(r)}"
                                                  process="@this"
-                                                 update="tblRol :messagesRol"
-                                                 disabled="#{not r.activo}"
+                                                 update="tblRol"
                                                  styleClass="ui-button-danger">
 
-                                    <p:confirm header="Confirmar desactivación"
-                                               message="¿Deseas desactivar este rol?"
+                                    <p:confirm header="Confirmar eliminación"
+                                               message="¿Deseas eliminar este rol? Si tiene registros asociados, no se podrá eliminar."
                                                icon="pi pi-exclamation-triangle" />
                                 </p:commandButton>
 

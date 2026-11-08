@@ -11,7 +11,7 @@
 
     <ui:define name="contenido">
         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-            
+
             <!-- TARJETA IZQUIERDA: FORMULARIO CON CARD E ICONOS DE PRIME -->
             <div style="flex: 1; min-width: 320px;">
                 <p:card style="box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-top: 4px solid #10b981;">
@@ -24,7 +24,7 @@
 
                     <h:form id="frmNuevo">
                         <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 10px;">
-                            
+
                             <div>
                                 <p:outputLabel value="Producto" for="cmbProducto" style="font-weight: 600; display: block; margin-bottom: 6px;"/>
                                 <p:selectOneMenu id="cmbProducto" value="#{productoCaracteristicaFrm.idProductoSeleccionado}" style="width: 100%;" required="true" disabled="#{productoCaracteristicaFrm.registroSeleccionado.idProductoCaracteristica != null}">
@@ -47,16 +47,16 @@
                             </div>
 
                             <div style="display: flex; gap: 10px; margin-top: 15px;">
-                                <p:commandButton value="Guardar" 
-                                                 actionListener="#{productoCaracteristicaFrm.guardar()}" 
-                                                 update=":frmTabla:tblProductoCarac :frmNuevo :messages" 
-                                                 icon="pi pi-check-circle" 
+                                <p:commandButton value="Guardar"
+                                                 actionListener="#{productoCaracteristicaFrm.guardar()}"
+                                                 update=":frmTabla:tblProductoCarac :frmNuevo"
+                                                 icon="pi pi-check-circle"
                                                  styleClass="ui-button-success" style="flex: 1;" />
-                                
-                                <p:commandButton value="Nuevo" 
-                                                 actionListener="#{productoCaracteristicaFrm.nuevoRegistro()}" 
-                                                 update=":frmNuevo" 
-                                                 icon="pi pi-file" 
+
+                                <p:commandButton value="Nuevo"
+                                                 actionListener="#{productoCaracteristicaFrm.nuevoRegistro()}"
+                                                 update=":frmNuevo"
+                                                 icon="pi pi-file"
                                                  styleClass="ui-button-outlined ui-button-secondary" />
                             </div>
                         </div>
@@ -72,10 +72,10 @@
                     </f:facet>
 
                     <h:form id="frmTabla">
-                        <p:dataTable id="tblProductoCarac" 
-                                     var="pc" 
-                                     value="#{productoCaracteristicaFrm.listaProductoCaracteristica}" 
-                                     paginator="true" 
+                        <p:dataTable id="tblProductoCarac"
+                                     var="pc"
+                                     value="#{productoCaracteristicaFrm.listaProductoCaracteristica}"
+                                     paginator="true"
                                      rows="7"
                                      paginatorPosition="bottom"
                                      size="small">
@@ -95,7 +95,7 @@
                             </p:column>
                             <p:column headerText="Acciones">
                                 <p:commandButton icon="pi pi-pencil" title="Editar" action="#{productoCaracteristicaFrm.seleccionar(pc)}" update=":frmNuevo" />
-                                <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{productoCaracteristicaFrm.eliminar(pc)}" update=":frmTabla:tblProductoCarac :messages">
+                                <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{productoCaracteristicaFrm.eliminar(pc)}" update=":frmTabla:tblProductoCarac">
                                     <p:confirm header="Confirmar eliminación" message="¿Desea eliminar esta asignación?" icon="pi pi-exclamation-triangle" />
                                 </p:commandButton>
                             </p:column>

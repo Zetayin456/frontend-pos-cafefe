@@ -17,7 +17,7 @@
                 </h:panelGrid>
                 
                 <p:commandButton value="Guardar" actionListener="#{cajaBean.guardar()}" 
-                                 update="frmCaja :messages" icon="pi pi-save" />
+                                 update="frmCaja" icon="pi pi-save" />
                 <p:commandButton value="Nuevo" action="#{cajaBean.nuevoRegistro()}" update="frmCaja" immediate="true" icon="pi pi-plus" />
             </p:panel>
 
@@ -32,7 +32,7 @@
                 </p:column>
                 <p:column headerText="Acciones">
                     <p:commandButton icon="pi pi-pencil" title="Editar" action="#{cajaBean.seleccionar(c)}" update="frmCaja" />
-                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{cajaBean.eliminar(c)}" update="frmCaja :messages">
+                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{cajaBean.eliminar(c)}" update="frmCaja">
                         <p:confirm header="Confirmar eliminación" message="¿Desea eliminar esta caja?" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </p:column>

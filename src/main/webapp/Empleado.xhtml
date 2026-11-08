@@ -14,9 +14,6 @@
 
     <ui:define name="contenido">
 
-        <p:messages id="messagesEmpleado"
-                    showDetail="true"
-                    closable="true" />
 
         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
 
@@ -31,9 +28,6 @@
 
                     <h:form id="frmNuevo">
 
-                        <p:messages id="formMessages"
-                                    showDetail="true"
-                                    closable="true" />
 
                         <div style="display: flex; flex-direction: column; gap: 15px;">
 
@@ -87,7 +81,7 @@
                                 <p:commandButton value="Guardar"
                                                  actionListener="#{empleadoFrm.guardar()}"
                                                  process="@form"
-                                                 update=":frmTabla:tblEmpleado :messagesEmpleado formMessages"
+                                                 update=":frmTabla:tblEmpleado"
                                                  icon="pi pi-save"
                                                  styleClass="ui-button-info"
                                                  style="flex: 1;" />
@@ -150,15 +144,14 @@
                                                  style="margin-right: 5px;" />
 
                                 <p:commandButton icon="pi pi-trash"
-                                                 title="Desactivar"
+                                                 title="Eliminar"
                                                  actionListener="#{empleadoFrm.eliminar(e)}"
                                                  process="@this"
-                                                 update="tblEmpleado :messagesEmpleado"
-                                                 disabled="#{not e.activo}"
+                                                 update="tblEmpleado"
                                                  styleClass="ui-button-danger">
 
-                                    <p:confirm header="Confirmar desactivación"
-                                               message="¿Deseas desactivar este empleado?"
+                                    <p:confirm header="Confirmar eliminación"
+                                               message="¿Deseas eliminar este empleado? Si tiene registros asociados, no se podrá eliminar."
                                                icon="pi pi-exclamation-triangle" />
                                 </p:commandButton>
 

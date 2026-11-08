@@ -49,7 +49,7 @@
                 <div style="text-align: right; margin-top: 10px;">
                     <p:commandButton value="Guardar"
                                      actionListener="#{descuentoProductoFrm.guardar()}"
-                                     update=":frmTabla:tblDescuentoProducto :frmNuevo :messages"
+                                     update=":frmTabla:tblDescuentoProducto :frmNuevo"
                                      icon="pi pi-check" />
                     <p:commandButton value="Nuevo" actionListener="#{descuentoProductoFrm.nuevoRegistro()}" update="frmNuevo" process="@this" icon="pi pi-plus" styleClass="ui-button-secondary" />
                 </div>
@@ -97,7 +97,7 @@
                                      actionListener="#{descuentoProductoFrm.seleccionarRegistro(dp)}"
                                      update=":frmNuevo"
                                      process="@this" />
-                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{descuentoProductoFrm.eliminar(dp)}" update=":frmTabla:tblDescuentoProducto :messages">
+                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{descuentoProductoFrm.eliminar(dp)}" update=":frmTabla:tblDescuentoProducto">
                         <p:confirm header="Confirmar eliminación" message="¿Desea eliminar esta asignación de descuento?" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </p:column>

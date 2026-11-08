@@ -10,7 +10,7 @@
 
     <ui:define name="contenido">
         <h:form id="frmOrden">
-            <p:messages id="messages" showDetail="true" closable="true" />
+
 
             <p:panel header="Formulario de Orden">
                 <h:panelGrid columns="2" cellpadding="5">
@@ -48,7 +48,7 @@
                     </h:panelGrid>
                     <p:commandButton value="Agregar Producto" actionListener="#{ordenFrm.agregarProducto()}"
                                      process="@form"
-                                     update="tblDetalle cboProd obsItem messages" icon="pi pi-plus" styleClass="ui-button-info" />
+                                     update="tblDetalle cboProd obsItem" icon="pi pi-plus" styleClass="ui-button-info" />
                 </p:panel>
 
                 <h:panelGrid columns="1" cellpadding="5">
@@ -90,7 +90,7 @@
                                      icon="pi pi-check"
                                      actionListener="#{ordenFrm.aplicarDescuentoSeleccionado(item)}"
                                      process="@form"
-                                     update="tblDetalle messages"
+                                     update="tblDetalle"
                                      disabled="#{ordenFrm.registroSeleccionado.idOrden != null or empty ordenFrm.getDescuentosDisponibles(item)}" />
                     <h:outputText value="No hay descuentos vigentes" styleClass="ui-message-warn"
                                   rendered="#{empty ordenFrm.getDescuentosDisponibles(item)}" />
@@ -106,9 +106,7 @@
 
     <p:panel header="Órdenes registradas">
 
-        <p:messages id="mensajesLista"
-                    showDetail="true"
-                    closable="true" />
+
 
         <p:dataTable id="tablaOrdenes"
                      value="#{ordenFrm.registros}"

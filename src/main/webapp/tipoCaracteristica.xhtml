@@ -17,7 +17,7 @@
                 </h:panelGrid>
                 
                 <p:commandButton value="Guardar" actionListener="#{tipoCaracteristicaBean.guardar()}" 
-                                 update="frmTipoCaracteristica :messages" icon="pi pi-save" />
+                                 update="frmTipoCaracteristica" icon="pi pi-save" />
                 <p:commandButton value="Nuevo" action="#{tipoCaracteristicaBean.limpiar()}" update="frmTipoCaracteristica" immediate="true" icon="pi pi-plus" />
             </p:panel>
 
@@ -32,7 +32,7 @@
                 </p:column>
                 <p:column headerText="Acciones">
                     <p:commandButton icon="pi pi-pencil" action="#{tipoCaracteristicaBean.seleccionar(tc)}" update="frmTipoCaracteristica" title="Editar" />
-                    <p:commandButton icon="pi pi-trash" action="#{tipoCaracteristicaBean.eliminar(tc)}" update="frmTipoCaracteristica :messages" title="Eliminar">
+                    <p:commandButton icon="pi pi-trash" action="#{tipoCaracteristicaBean.eliminar(tc)}" update="frmTipoCaracteristica" title="Eliminar">
                         <p:confirm header="Confirmar eliminación" message="¿Desea eliminar este tipo?" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </p:column>

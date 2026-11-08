@@ -129,9 +129,7 @@ public class RolFrm implements Serializable {
         }
 
         try {
-            // Eliminación lógica: no borramos el registro físicamente.
-            rol.setActivo(false);
-            rolRepository.edit(rol);
+            rolRepository.remove(rol);
 
             if (registroSeleccionado != null
                     && rol.getIdRol().equals(registroSeleccionado.getIdRol())) {
@@ -143,14 +141,14 @@ public class RolFrm implements Serializable {
             mostrarMensaje(
                     FacesMessage.SEVERITY_INFO,
                     "Éxito",
-                    "Rol desactivado correctamente."
+                    "Rol eliminado correctamente."
             );
 
         } catch (Exception e) {
             mostrarMensaje(
                     FacesMessage.SEVERITY_ERROR,
                     "Error",
-                    "No se pudo desactivar el rol."
+                    "No se pudo eliminar el rol. Puede estar asociado a otros registros."
             );
         }
     }

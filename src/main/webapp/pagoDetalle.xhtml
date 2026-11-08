@@ -17,7 +17,7 @@
                 </h:panelGrid>
                 
                 <p:commandButton value="Guardar" actionListener="#{pagoDetalleFrm.btnGuardarHandler()}" 
-                                 update="frmPagoDetalle :messages" icon="pi pi-save" />
+                                 update="frmPagoDetalle" icon="pi pi-save" />
                 <p:commandButton value="Nuevo" action="#{pagoDetalleFrm.nuevoRegistro()}" update="frmPagoDetalle" immediate="true" icon="pi pi-plus" />
             </p:panel>
 
@@ -32,7 +32,7 @@
                 </p:column>
                 <p:column headerText="Acciones">
                     <p:commandButton icon="pi pi-pencil" title="Editar" action="#{pagoDetalleFrm.seleccionar(pd)}" update="frmPagoDetalle" />
-                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{pagoDetalleFrm.eliminar(pd)}" update="frmPagoDetalle :messages">
+                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{pagoDetalleFrm.eliminar(pd)}" update="frmPagoDetalle">
                         <p:confirm header="Confirmar eliminación" message="¿Desea eliminar este detalle de pago?" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </p:column>

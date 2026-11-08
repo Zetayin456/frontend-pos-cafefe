@@ -258,7 +258,7 @@ if (registroSeleccionado.getIdEmpleadoRol() == null) {
         }
     }
 
-    public void desactivar(EmpleadoRol asignacion) {
+    public void eliminar(EmpleadoRol asignacion) {
         if (asignacion == null
                 || asignacion.getIdEmpleadoRol() == null) {
             mensaje(FacesMessage.SEVERITY_WARN,
@@ -267,8 +267,7 @@ if (registroSeleccionado.getIdEmpleadoRol() == null) {
         }
 
         try {
-            asignacion.setActivo(false);
-            empleadoRolRepository.edit(asignacion);
+            empleadoRolRepository.remove(asignacion);
 
             if (registroSeleccionado != null
                     && asignacion.getIdEmpleadoRol().equals(
@@ -279,14 +278,14 @@ if (registroSeleccionado.getIdEmpleadoRol() == null) {
             cargarDatos();
 
             mensaje(FacesMessage.SEVERITY_INFO,
-                    "Éxito", "Asignación desactivada correctamente.");
+                    "Éxito", "Asignación eliminada correctamente.");
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE,
-                    "Error al desactivar la asignación", e);
+                    "Error al eliminar la asignación", e);
 
             mensaje(FacesMessage.SEVERITY_ERROR,
-                    "Error", "No se pudo desactivar la asignación.");
+                    "Error", "No se pudo eliminar la asignación.");
         }
     }
 
