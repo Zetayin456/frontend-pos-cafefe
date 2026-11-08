@@ -1,20 +1,26 @@
 :root {
     color-scheme: light;
-    --cafe-900: #35251d;
-    --cafe-800: #493327;
-    --cafe-700: #694936;
-    --cafe-100: #f4eee8;
-    --cafe-050: #fbf9f6;
-    --amber-500: #c78435;
-    --amber-100: #f6e8d1;
+    --cafe-900: #2c1d17;
+    --cafe-800: #3d2b22;
+    --cafe-700: #4a2c2a;
+    --cafe-100: #f4ebe1;
+    --cafe-050: #faf6f0;
+    --amber-500: #c87d55;
+    --amber-100: #f4e2d5;
     --ink: #29231f;
     --muted: #746b64;
-    --line: #e5ddd5;
-    --surface: #fff;
-    --shadow: 0 0.4rem 1.4rem rgb(53 37 29 / 7%);
+    --line: #d6c7b2;
+    --surface: #faf6f0;
+    --shadow: 0 4px 12px rgba(0,0,0,0.05);
+    --focus-coffee: #8b5a2b;
+    --warm-gray: #7d746d;
 }
 
 * { box-sizing: border-box; }
+
+h1, h2, h3, h4, .ui-panel-title, .ui-dialog-title {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
 
 html { min-height: 100%; }
 
@@ -35,7 +41,7 @@ body {
     gap: 1rem;
     padding: 1rem clamp(1rem, 3vw, 2.5rem);
     color: var(--cafe-900);
-    background: var(--surface);
+    background: var(--cafe-050);
     border-bottom: 1px solid var(--line);
     box-shadow: 0 0.15rem 0.6rem rgb(53 37 29 / 4%);
 }
@@ -61,15 +67,23 @@ body {
     grid-area: navegacion;
     min-width: 0;
     padding: 1.25rem .9rem;
-    background: var(--cafe-100);
+    background: #f2e9e1;
     border-right: 1px solid var(--line);
 }
 
-.sidebar-menu h3 { margin: 0 0 .75rem .4rem; color: var(--muted); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
+.sidebar-menu h3 { margin: 0 0 .75rem .4rem; color: #5c3d2e; font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .sidebar-menu .ui-menu { width: 100%; border: 0; background: transparent; }
-.sidebar-menu .ui-menu .ui-menuitem-link { margin: .1rem 0; padding: .65rem .75rem; border-radius: .55rem; color: var(--cafe-800); }
+.sidebar-menu .ui-menu .ui-menuitem-link { margin: .1rem 0; padding: .65rem .75rem; border: 0; border-radius: 8px; color: #3a251e; background: transparent; opacity: 1; }
+.sidebar-menu .ui-menu .ui-menuitem-link .ui-menuitem-text,
+.sidebar-menu .ui-menu .ui-menuitem-link .ui-menuitem-icon { color: inherit; opacity: 1; }
 .sidebar-menu .ui-menu .ui-menuitem-link:hover,
-.sidebar-menu .ui-menu .ui-menuitem-link:focus { color: var(--cafe-900); background: var(--amber-100); }
+.sidebar-menu .ui-menu .ui-menuitem-link:focus { color: #2c1d17; background: #e8d5c4; }
+.sidebar-menu .ui-menu .ui-menuitem-link.ui-state-active,
+.sidebar-menu .ui-menu .ui-menuitem-link[aria-current="page"] { color: #fff; background: #5c3d2e; border-radius: 8px; }
+.sidebar-menu .ui-menu .ui-menuitem-link.ui-state-active .ui-menuitem-text,
+.sidebar-menu .ui-menu .ui-menuitem-link.ui-state-active .ui-menuitem-icon,
+.sidebar-menu .ui-menu .ui-menuitem-link[aria-current="page"] .ui-menuitem-text,
+.sidebar-menu .ui-menu .ui-menuitem-link[aria-current="page"] .ui-menuitem-icon { color: #fff; opacity: 1; }
 
 .content-area {
     grid-area: contenido;
@@ -79,11 +93,20 @@ body {
 
 .content-area > h1, .content-area > h2, .content-area .ui-panel-titlebar { color: var(--cafe-900); }
 .content-area .ui-panel, .content-area .ui-card, .content-area .ui-datatable,
-.content-area .ui-dialog { border-color: var(--line); border-radius: .75rem; box-shadow: var(--shadow); }
-.content-area .ui-panel .ui-panel-titlebar { background: var(--surface); border-color: var(--line); }
+.content-area .ui-dialog { border-color: var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); }
+.content-area .ui-panel .ui-panel-titlebar { background: var(--cafe-100); border-color: var(--line); border-radius: 8px 8px 0 0; color: var(--cafe-900); }
+.content-area .ui-panel-content { background: var(--surface); border-radius: 0 0 8px 8px; }
 .content-area input, .content-area textarea, .content-area .ui-inputfield { max-width: 100%; }
-.content-area .ui-button.btn-primary { background: var(--cafe-700) !important; border-color: var(--cafe-700) !important; border-radius: .5rem; }
-.content-area .ui-button.btn-primary:hover { background: var(--cafe-800) !important; border-color: var(--cafe-800) !important; }
+.content-area .ui-inputfield, .content-area input, .content-area textarea, .content-area select,
+.header-container .ui-inputfield, .header-container select { border: 1px solid var(--line); border-radius: 8px; background: #fffdf9; color: var(--ink); }
+.content-area .ui-inputfield:focus, .content-area input:focus, .content-area textarea:focus, .content-area select:focus,
+.header-container .ui-inputfield:focus { border-color: var(--focus-coffee) !important; box-shadow: 0 0 0 .18rem rgb(139 90 43 / 16%) !important; outline: none !important; }
+.content-area .ui-button, .header-container .ui-button { border-radius: 8px; }
+.content-area .ui-button:not(.ui-button-secondary):not(.ui-button-outlined):not(.ui-button-text):not(.ui-button-danger) { background: var(--cafe-700); border-color: var(--cafe-700); color: #fffaf4; }
+.content-area .ui-button:not(.ui-button-secondary):not(.ui-button-outlined):not(.ui-button-text):not(.ui-button-danger):hover { background: var(--amber-500); border-color: var(--amber-500); }
+.content-area .ui-button.ui-button-secondary { background: var(--warm-gray); border-color: var(--warm-gray); color: #fff; }
+.content-area .ui-button.ui-button-secondary:hover { background: #665d57; border-color: #665d57; }
+.content-area .ui-state-focus, .content-area .ui-button:focus, .content-area .ui-button:focus-visible { box-shadow: 0 0 0 .18rem rgb(139 90 43 / 22%) !important; }
 
 /* Flujo común de mantenimiento: formulario primero, listado después. */
 .content-area form {
@@ -177,8 +200,11 @@ body {
 .footer-container {
     text-align: center;
     padding: 1rem;
-    background: var(--surface);
+    background: var(--cafe-100);
     border-top: 1px solid var(--line);
     font-size: 0.9em;
     color: var(--muted);
 }
+
+.content-area .ui-datatable thead th { background: var(--cafe-100); }
+.content-area .ui-datatable tbody tr:nth-child(even) { background: #fdfaf6; }
