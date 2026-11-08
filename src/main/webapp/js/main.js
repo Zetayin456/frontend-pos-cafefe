@@ -1,4 +1,5 @@
 import CajaService from "./control/caja_service.js";
+import "./componentes/tipo-producto-modal.js";
 
 const cajaService = new CajaService();
 

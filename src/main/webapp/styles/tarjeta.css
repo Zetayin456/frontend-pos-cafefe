@@ -1,0 +1,16 @@
+:host { display: block; color: #302923; font: 1rem/1.5 Inter, ui-sans-serif, system-ui, sans-serif; }
+.catalog { padding: 1.2rem; border: 1px solid #d6c7b2; border-radius: .8rem; background: #faf6f0; box-shadow: 0 4px 12px rgb(0 0 0 / 5%); }
+.catalog-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.eyebrow { margin: 0 0 .3rem; color: #827970; font-size: .68rem; font-weight: 750; letter-spacing: .13em; }
+h2 { margin: 0; color: #2c1d17; font: 500 1.25rem Georgia, serif; }
+.refresh { min-height: 2.4rem; padding: .45rem .8rem; border: 1px solid #d6c7b2; border-radius: 8px; color: #4a2c2a; background: #fff; cursor: pointer; }
+.message { min-height: 1.4rem; margin: .75rem 0; color: #827970; font-size: .82rem; }
+.message.error { color: #a53f35; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .85rem; }
+.card { height: 100%; overflow: hidden; border: 1px solid #d6c7b2; border-radius: .75rem; background: #fffdf9; box-shadow: 0 3px 10px rgb(44 29 23 / 6%); }
+.header { padding: .85rem 1rem; color: #fffaf4; background: #4a2c2a; font: 500 1.05rem Georgia, serif; }
+.body { min-height: 3.8rem; padding: .8rem 1rem; color: #655c54; font-size: .82rem; }
+.body p { margin: 0; }
+.footer { padding: 0 1rem .85rem; }
+.badge { display: inline-block; padding: .2rem .55rem; border-radius: 99rem; color: #745e48; background: #f4e2d5; font-size: .7rem; font-weight: 700; }
+.badge.active { color: #426348; background: #e5eee7; }

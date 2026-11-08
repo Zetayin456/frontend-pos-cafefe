@@ -62,6 +62,7 @@ a { color: inherit; }
 .summary-card .muted { margin-top: .2rem; font-size: .8rem; }
 .summary-card a { display: inline-block; margin-top: .75rem; color: var(--coffee-700); font-size: .8rem; font-weight: 650; text-decoration: none; }
 .summary-card a:hover { text-decoration: underline; }
+.category-section { margin: 0 0 1rem; }
 .tools-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(17rem, .85fr); align-items: start; gap: 1rem; }
 .panel { min-width: 0; padding: 1.2rem; border: 1px solid var(--line); border-radius: .8rem; background: var(--white); box-shadow: var(--shadow); }
 .panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
