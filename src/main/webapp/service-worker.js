@@ -2,7 +2,7 @@ const CACHE_NAME = "cafefe-pos-shell-v1";
 const APP_SHELL = [
     "./index.html",
     "./manifest.json",
-    "./resources/css/principal.css",
+    "./styles/principal.css",
     "./styles/tarjeta.css",
     "./js/main.js",
     "./js/pwa.js",
