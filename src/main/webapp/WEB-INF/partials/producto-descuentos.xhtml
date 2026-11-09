@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="http://primefaces.org/ui">
+<h:form id="frmNuevo">
+            <p:panel header="Asignar descuento a producto" style="margin-top: 1rem;">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Producto:" for="cboProducto" />
+                    <p:selectOneMenu id="cboProducto"
+                                     value="#{descuentoProductoFrm.idProductoSeleccionado}"
+                                     disabled="#{descuentoProductoFrm.registroSeleccionado.idDescuentoProducto != null}"
+                                     required="true">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                        <f:selectItems value="#{descuentoProductoFrm.listaProductos}" var="prod"
+                                       itemLabel="#{prod.nombre}" itemValue="#{prod.idProducto}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Descuento:" for="cboDescuento" />
+                    <p:selectOneMenu id="cboDescuento"
+                                     value="#{descuentoProductoFrm.idDescuentoSeleccionado}"
+                                     disabled="#{descuentoProductoFrm.registroSeleccionado.idDescuentoProducto != null}"
+                                     required="true">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                        <f:selectItems value="#{descuentoProductoFrm.listaDescuentos}" var="desc"
+                                       itemLabel="#{desc.nombre}" itemValue="#{desc.idDescuento}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Valor:" for="txtValor" />
+                    <p:inputNumber id="txtValor" value="#{descuentoProductoFrm.registroSeleccionado.valor}" decimalPlaces="0"/>
+
+                    <p:outputLabel value="Fecha Desde:" for="calDesde" />
+                    <p:datePicker id="calDesde" value="#{descuentoProductoFrm.registroSeleccionado.fechaDesde}" showTime="true" disabled="#{descuentoProductoFrm.registroSeleccionado.idDescuentoProducto != null}"/>
+
+                    <p:outputLabel value="Fecha Hasta:" for="calHasta" />
+                    <p:datePicker id="calHasta" value="#{descuentoProductoFrm.registroSeleccionado.fechaHasta}" showTime="true" disabled="#{descuentoProductoFrm.registroSeleccionado.idDescuentoProducto != null}"/>
+
+                    <p:outputLabel value="Observaciones:" for="txtObs" />
+                    <p:inputTextarea id="txtObs" value="#{descuentoProductoFrm.registroSeleccionado.observaciones}"/>
+                </h:panelGrid>
+
+                <div style="text-align: right; margin-top: 10px;">
+                    <p:commandButton value="Guardar"
+                                     actionListener="#{descuentoProductoFrm.guardar()}"
+                                     update=":frmTabla:tblDescuentoProducto :frmNuevo"
+                                     icon="pi pi-check" />
+                    <p:commandButton value="Nuevo" actionListener="#{descuentoProductoFrm.nuevoRegistro()}" update="frmNuevo" process="@this" icon="pi pi-plus" styleClass="ui-button-secondary" />
+                </div>
+            </p:panel>
+        </h:form>
+
+        <h:form id="frmTabla">
+            <p:dataTable id="tblDescuentoProducto"
+                         var="dp"
+                         value="#{descuentoProductoFrm.listaDescuentoProducto}"
+                         paginator="true"
+                         rows="5"
+                         rowsPerPageTemplate="5,10,15">
+
+                <p:column headerText="Producto">
+                    <h:outputText value="#{dp.idProducto.nombre}" />
+                </p:column>
+
+                <p:column headerText="Descuento">
+                    <h:outputText value="#{dp.idDescuento.nombre}" />
+                </p:column>
+
+                <p:column headerText="Valor (%)">
+                    <h:outputText value="#{dp.valor}" />
+                </p:column>
+
+                <p:column headerText="Desde">
+                    <h:outputText value="#{dp.fechaDesde}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/El_Salvador"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Hasta">
+                    <h:outputText value="#{dp.fechaHasta}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/El_Salvador"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Observaciones">
+                    <h:outputText value="#{dp.observaciones}" />
+                </p:column>
+
+                <p:column headerText="Acciones">
+                    <p:commandButton icon="pi pi-pencil"
+                                     actionListener="#{descuentoProductoFrm.seleccionarRegistro(dp)}"
+                                     update=":frmNuevo"
+                                     process="@this" />
+                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{descuentoProductoFrm.eliminar(dp)}" update=":frmTabla:tblDescuentoProducto">
+                        <p:confirm header="Confirmar eliminación" message="¿Desea eliminar esta asignación de descuento?" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            
+        </h:form>
+</ui:composition>

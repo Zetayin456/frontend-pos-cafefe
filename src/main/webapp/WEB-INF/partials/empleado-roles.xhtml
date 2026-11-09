@@ -1,0 +1,175 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="http://primefaces.org/ui">
+<h:form id="frmEmpleadoRol">
+
+
+
+            <!-- FORMULARIO -->
+            <p:card style="max-width: 1000px; margin: 0 auto;">
+
+                <f:facet name="title">
+                    <i class="pi pi-user-edit"
+                       style="margin-right: 10px;"></i>
+
+                    #{empleadoRolFrm.registroSeleccionado.idEmpleadoRol
+                      == null ? 'Nueva asignación' : 'Editar asignación'}
+                </f:facet>
+
+                <h:panelGrid columns="2"
+                             cellpadding="8"
+                             style="width: 100%;">
+
+                    <p:outputLabel for="cmbEmpleado"
+                                   value="Empleado: *" />
+
+                    <p:selectOneMenu id="cmbEmpleado"
+                                     value="#{empleadoRolFrm.idEmpleadoSeleccionado}"
+                                     required="true"
+                                     requiredMessage="Selecciona un empleado."
+                                     disabled="#{empleadoRolFrm.registroSeleccionado.idEmpleadoRol != null}"
+                                     style="width: 100%;">
+
+                        <f:selectItem
+                            itemLabel="-- Selecciona un empleado --"
+                            itemValue="#{null}"
+                            noSelectionOption="true" />
+
+                        <f:selectItems
+                            value="#{empleadoRolFrm.listaEmpleados}"
+                            var="emp"
+                            itemLabel="#{emp.nombre} #{emp.apellido}#{emp.activo eq true ? '' : ' (Inactivo)'}"
+                            itemValue="#{emp.idEmpleado}" />
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="cmbRol"
+                                   value="Rol: *" />
+
+                    <p:selectOneMenu id="cmbRol"
+                                     value="#{empleadoRolFrm.idRolSeleccionado}"
+                                     required="true"
+                                     requiredMessage="Selecciona un rol."
+                                     disabled="#{empleadoRolFrm.registroSeleccionado.idEmpleadoRol != null}"
+                                     style="width: 100%;">
+
+                        <f:selectItem
+                            itemLabel="-- Selecciona un rol --"
+                            itemValue="#{null}"
+                            noSelectionOption="true" />
+
+                        <f:selectItems
+                            value="#{empleadoRolFrm.listaRoles}"
+                            var="rol"
+                            itemLabel="#{rol.nombre}#{rol.activo eq true ? '' : ' (Inactivo)'}"
+                            itemValue="#{rol.idRol}" />
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="observaciones"
+                                   value="Observaciones:" />
+
+                    <p:inputTextarea id="observaciones"
+                                     value="#{empleadoRolFrm.registroSeleccionado.observaciones}"
+                                     rows="3"
+                                     autoResize="true"
+                                     maxlength="2000"
+                                     style="width: 100%;" />
+
+                    <p:outputLabel for="activo"
+                                   value="Asignación activa:" />
+
+                    <p:selectBooleanCheckbox id="activo"
+                        value="#{empleadoRolFrm.registroSeleccionado.activo}" />
+
+                </h:panelGrid>
+
+                <p:separator />
+
+                <p:commandButton
+                    value="Guardar asignación"
+                    action="#{empleadoRolFrm.guardarCambios}"
+                    process="@form"
+                    update="@form"
+                    icon="pi pi-save" />
+
+                <p:commandButton
+                    value="Nueva / Limpiar"
+                    action="#{empleadoRolFrm.nuevoRegistro}"
+                    process="@this"
+                    update="@form"
+                    immediate="true"
+                    icon="pi pi-plus"
+                    styleClass="ui-button-secondary" />
+
+            </p:card>
+
+            <!-- TABLA DE ASIGNACIONES -->
+            <p:panel header="Asignaciones registradas"
+                     style="margin-top: 20px;">
+
+                <p:dataTable id="tblEmpleadoRol"
+                             value="#{empleadoRolFrm.listaAsignaciones}"
+                             var="er"
+                             rowKey="#{er.idEmpleadoRol}"
+                             paginator="true"
+                             rows="10"
+                             emptyMessage="No hay asignaciones registradas.">
+
+                    <p:column headerText="Empleado">
+                        <h:outputText
+                            value="#{er.idEmpleado != null
+                                     ? er.idEmpleado.nombre.concat(' ').concat(er.idEmpleado.apellido)
+                                     : 'Sin empleado'}" />
+                    </p:column>
+
+                    <p:column headerText="Rol">
+                        <h:outputText
+                            value="#{er.idRol != null
+                                     ? er.idRol.nombre
+                                     : 'Sin rol'}" />
+                    </p:column>
+
+                    <p:column headerText="Observaciones">
+                        <h:outputText value="#{er.observaciones}" />
+                    </p:column>
+
+                    <p:column headerText="Estado">
+                        <p:tag
+                            value="#{er.activo eq true ? 'Activo' : 'Inactivo'}"
+                            severity="#{er.activo eq true ? 'success' : 'danger'}" />
+                    </p:column>
+
+                    <p:column headerText="Acciones">
+
+                        <p:commandButton
+                            icon="pi pi-pencil"
+                            title="Editar"
+                            action="#{empleadoRolFrm.seleccionar(er)}"
+                            process="@this"
+                            update=":frmEmpleadoRol"
+                            styleClass="ui-button-warning" />
+
+                        <p:commandButton
+                            icon="pi pi-ban"
+                            title="Eliminar asignación"
+                            action="#{empleadoRolFrm.eliminar(er)}"
+                            process="@this"
+                            update=":frmEmpleadoRol"
+                            styleClass="ui-button-danger">
+
+                            <p:confirm
+                                header="Confirmar eliminación"
+                                message="¿Deseas eliminar esta asignación?"
+                                icon="pi pi-exclamation-triangle" />
+
+                        </p:commandButton>
+
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:panel>
+
+            
+
+        </h:form>
+</ui:composition>

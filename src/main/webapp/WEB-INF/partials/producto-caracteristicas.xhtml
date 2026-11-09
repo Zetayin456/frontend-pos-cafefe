@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="http://primefaces.org/ui">
+<div style="display: flex; gap: 20px; flex-wrap: wrap;">
+
+            <!-- TARJETA IZQUIERDA: FORMULARIO CON CARD E ICONOS DE PRIME -->
+            <div style="flex: 1; min-width: 320px;">
+                <p:card style="box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-top: 4px solid #10b981;">
+                    <f:facet name="title">
+                        <i class="pi pi-sliders-h" style="color: #10b981; margin-right: 8px;"></i>Asignar Especificación
+                    </f:facet>
+                    <f:facet name="subtitle">
+                        Define los detalles técnicos o variantes del producto
+                    </f:facet>
+
+                    <h:form id="frmNuevo">
+                        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 10px;">
+
+                            <div>
+                                <p:outputLabel value="Producto" for="cmbProducto" style="font-weight: 600; display: block; margin-bottom: 6px;"/>
+                                <p:selectOneMenu id="cmbProducto" value="#{productoCaracteristicaFrm.idProductoSeleccionado}" style="width: 100%;" required="true" disabled="#{productoCaracteristicaFrm.registroSeleccionado.idProductoCaracteristica != null}">
+                                    <f:selectItem itemLabel="-- Seleccionar Producto --" itemValue="" />
+                                    <f:selectItems value="#{productoCaracteristicaFrm.listaProductos}" var="p" itemLabel="#{p.nombre}" itemValue="#{p.idProducto}" />
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div>
+                                <p:outputLabel value="Característica" for="cmbCaracteristica" style="font-weight: 600; display: block; margin-bottom: 6px;"/>
+                                <p:selectOneMenu id="cmbCaracteristica" value="#{productoCaracteristicaFrm.idCaracteristicaSeleccionada}" style="width: 100%;" required="true" disabled="#{productoCaracteristicaFrm.registroSeleccionado.idProductoCaracteristica != null}">
+                                    <f:selectItem itemLabel="-- Seleccionar Característica --" itemValue="" />
+                                    <f:selectItems value="#{productoCaracteristicaFrm.listaCaracteristicas}" var="c" itemLabel="#{c.nombre}" itemValue="#{c.idCaracteristica}" />
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div>
+                                <p:outputLabel value="Valor Especificado" for="txtValor" style="font-weight: 600; display: block; margin-bottom: 6px;"/>
+                                <p:inputText id="txtValor" value="#{productoCaracteristicaFrm.registroSeleccionado.valor}" placeholder="Ej. 16 oz, Descremada, Extra Caliente" style="width: 100%;"/>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <p:commandButton value="Guardar"
+                                                 actionListener="#{productoCaracteristicaFrm.guardar()}"
+                                                 update=":frmTabla:tblProductoCarac :frmNuevo"
+                                                 icon="pi pi-check-circle"
+                                                 styleClass="ui-button-success" style="flex: 1;" />
+
+                                <p:commandButton value="Nuevo"
+                                                 actionListener="#{productoCaracteristicaFrm.nuevoRegistro()}"
+                                                 update=":frmNuevo"
+                                                 icon="pi pi-file"
+                                                 styleClass="ui-button-outlined ui-button-secondary" />
+                            </div>
+                        </div>
+                    </h:form>
+                </p:card>
+            </div>
+
+            <!-- TARJETA DERECHA: TABLA DE DETALLES -->
+            <div style="flex: 2; min-width: 450px;">
+                <p:card style="box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+                    <f:facet name="title">
+                        <i class="pi pi-table" style="color: #64748b; margin-right: 8px;"></i>Listado de Especificaciones
+                    </f:facet>
+
+                    <h:form id="frmTabla">
+                        <p:dataTable id="tblProductoCarac"
+                                     var="pc"
+                                     value="#{productoCaracteristicaFrm.listaProductoCaracteristica}"
+                                     paginator="true"
+                                     rows="7"
+                                     paginatorPosition="bottom"
+                                     size="small">
+
+                            <p:column headerText="Producto">
+                                <span style="font-weight: 600; color: #1e293b;">
+                                    #{pc.idProducto.nombre}
+                                </span>
+                            </p:column>
+
+                            <p:column headerText="Característica">
+                                <p:tag value="#{pc.idCaracteristica.nombre}" severity="info" icon="pi pi-tag" />
+                            </p:column>
+
+                            <p:column headerText="Valor / Detalle">
+                                <h:outputText value="#{pc.valor}" style="font-style: italic; font-weight: bold; color: #047857;" />
+                            </p:column>
+                            <p:column headerText="Acciones">
+                                <p:commandButton icon="pi pi-pencil" title="Editar" action="#{productoCaracteristicaFrm.seleccionar(pc)}" update=":frmNuevo" />
+                                <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{productoCaracteristicaFrm.eliminar(pc)}" update=":frmTabla:tblProductoCarac">
+                                    <p:confirm header="Confirmar eliminación" message="¿Desea eliminar esta asignación?" icon="pi pi-exclamation-triangle" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                        
+                    </h:form>
+                </p:card>
+            </div>
+
+        </div>
+</ui:composition>

@@ -166,6 +166,18 @@
 
         </h:form>
 
+        <p:tabView id="detalleProducto" style="margin-top: 1.5rem;">
+            <p:tab title="Tipos de producto">
+                <ui:include src="/WEB-INF/partials/producto-tipos.xhtml" />
+            </p:tab>
+            <p:tab title="Características">
+                <ui:include src="/WEB-INF/partials/producto-caracteristicas.xhtml" />
+            </p:tab>
+            <p:tab title="Descuentos">
+                <ui:include src="/WEB-INF/partials/producto-descuentos.xhtml" />
+            </p:tab>
+        </p:tabView>
+
     </ui:define>
 
 </ui:composition>

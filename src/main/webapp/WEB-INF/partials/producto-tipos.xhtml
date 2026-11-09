@@ -1,0 +1,168 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="http://primefaces.org/ui">
+<h:form id="formProductoTipoProducto">
+
+
+
+        <p:panel header="Categorización de Productos">
+
+            <h3>Nueva asignación / Editar asignación</h3>
+
+            <p:panelGrid columns="2"
+                         layout="grid"
+                         styleClass="ui-fluid"
+                         columnClasses="ui-grid-col-3,ui-grid-col-9">
+
+                <p:outputLabel for="producto"
+                               value="Producto:" />
+
+                <p:selectOneMenu id="producto"
+                                 value="#{productoTipoProductoFrm.idProductoSeleccionado}"
+                                 required="true"
+                                 requiredMessage="Selecciona un producto."
+                                 disabled="#{productoTipoProductoFrm.registroSeleccionado.idProductoTipoProducto != null}">
+
+                    <f:selectItem itemLabel="Selecciona un producto"
+                                  itemValue="#{null}"
+                                  noSelectionOption="true" />
+
+                    <f:selectItems
+                        value="#{productoTipoProductoFrm.listaProductos}"
+                        var="p"
+                        itemLabel="#{p.nombre}"
+                        itemValue="#{p.idProducto}" />
+
+                </p:selectOneMenu>
+
+                <p:outputLabel for="tipoProducto"
+                               value="Tipo de producto:" />
+
+                <p:selectOneMenu id="tipoProducto"
+                                 value="#{productoTipoProductoFrm.idTipoProductoSeleccionado}"
+                                 required="true"
+                                 requiredMessage="Selecciona un tipo de producto."
+                                 disabled="#{productoTipoProductoFrm.registroSeleccionado.idProductoTipoProducto != null}">
+
+                    <f:selectItem itemLabel="Selecciona un tipo"
+                                  itemValue="#{null}"
+                                  noSelectionOption="true" />
+
+                    <f:selectItems
+                        value="#{productoTipoProductoFrm.listaTiposProducto}"
+                        var="tipo"
+                        itemLabel="#{tipo.nombre}"
+                        itemValue="#{tipo.idTipoProducto}" />
+
+                </p:selectOneMenu>
+
+                <p:outputLabel for="observaciones"
+                               value="Observaciones:" />
+
+                <p:inputTextarea id="observaciones"
+                                 value="#{productoTipoProductoFrm.registroSeleccionado.observaciones}"
+                                 rows="3"
+                                 maxlength="500"
+                                 autoResize="false" />
+
+                <p:outputLabel value="Fecha de creación:" />
+
+                <p:datePicker
+                    value="#{productoTipoProductoFrm.registroSeleccionado.fechaCreacion}"
+                    pattern="dd/MM/yyyy HH:mm"
+                    showTime="true"
+                    disabled="true" />
+
+            </p:panelGrid>
+
+            <br />
+
+            <p:commandButton
+                value="Guardar asignación"
+                icon="pi pi-save"
+                action="#{productoTipoProductoFrm.guardar}"
+                process="@form"
+                update="@form" />
+
+            <p:commandButton
+                value="Nueva asignación / Limpiar"
+                icon="pi pi-plus"
+                action="#{productoTipoProductoFrm.nuevoRegistro}"
+                process="@this"
+                update="@form"
+                styleClass="ui-button-secondary"
+                style="margin-left: 8px;" />
+
+        </p:panel>
+
+        <br />
+
+        <p:panel header="Asignaciones actuales">
+
+            <p:dataTable
+                id="tablaAsignaciones"
+                value="#{productoTipoProductoFrm.listaProductoTipoProducto}"
+                var="ptp"
+                emptyMessage="No existen asignaciones registradas."
+                paginator="true"
+                rows="10"
+                >
+
+                <p:column headerText="Producto">
+                    <h:outputText
+                        value="#{ptp.idProducto.nombre}" />
+                </p:column>
+
+                <p:column headerText="Tipo de producto">
+                    <h:outputText
+                        value="#{ptp.idTipoProducto.nombre}" />
+                </p:column>
+
+                <p:column headerText="Fecha de creación">
+                    <h:outputText value="#{ptp.fechaCreacion}">
+                        <f:convertDateTime
+                            pattern="dd/MM/yyyy HH:mm"
+                            type="localDateTime"
+                            timeZone="America/El_Salvador" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Observaciones">
+                    <h:outputText value="#{ptp.observaciones}" />
+                </p:column>
+
+                <p:column headerText="Acciones"
+                          style="width: 180px;">
+
+                    <p:commandButton
+                        value="Editar"
+                        icon="pi pi-pencil"
+                        action="#{productoTipoProductoFrm.seleccionarRegistro(ptp)}"
+                        process="@this"
+                        update="@form"
+                        styleClass="ui-button-warning"
+                        style="margin-right: 5px;" />
+
+                    <p:commandButton
+                        value="Eliminar"
+                        icon="pi pi-trash"
+                        action="#{productoTipoProductoFrm.eliminar(ptp)}"
+                        process="@this"
+                        update="@form"
+                        styleClass="ui-button-danger">
+
+                        <p:confirm
+                            header="Confirmar eliminación"
+                            message="¿Seguro que deseas eliminar esta asignación?"
+                            icon="pi pi-exclamation-triangle" />
+
+                    </p:commandButton>
+
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+
+        
+
+    </h:form>
+</ui:composition>
