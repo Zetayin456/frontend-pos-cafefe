@@ -4,8 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#493327">
+    <meta name="description" content="Panel Cafefe POS para administrar productos, órdenes y operaciones de cafetería.">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/cafefe-192.svg" type="image/svg+xml">
     <title>Cafefe POS | Panel de demostración</title>
-    <link rel="stylesheet" href="styles/principal.css">
+    <link rel="stylesheet" href="resources/css/principal.css">
     <script type="module" src="js/main.js"></script>
 </head>
 <body>
@@ -20,6 +23,7 @@
                 <h1>Panel de operaciones</h1>
             </div>
             <span class="status-pill"><span class="status-dot"></span> Interfaz lista</span>
+            <install-app-button></install-app-button>
         </header>
 
         <nav class="app-nav" aria-label="Navegación principal">
@@ -45,6 +49,7 @@
 
             <section class="category-section" aria-label="Catálogo de categorías">
                 <tipo-producto-modal></tipo-producto-modal>
+                <p class="feedback" id="category-selection" aria-live="polite">Selecciona una categoría para ver su estado.</p>
             </section>
 
             <section class="tools-grid" id="herramientas" aria-label="Herramientas frontend">
@@ -68,5 +73,6 @@
 
         <footer class="app-footer"><span>CAFefe POS</span><span>Universidad de El Salvador · PPI115 · 2026</span></footer>
     </div>
+    <toast-center></toast-center>
 </body>
 </html>

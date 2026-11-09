@@ -14,3 +14,6 @@ h2 { margin: 0; color: #2c1d17; font: 500 1.25rem Georgia, serif; }
 .footer { padding: 0 1rem .85rem; }
 .badge { display: inline-block; padding: .2rem .55rem; border-radius: 99rem; color: #745e48; background: #f4e2d5; font-size: .7rem; font-weight: 700; }
 .badge.active { color: #426348; background: #e5eee7; }
+.select-category { margin-top: .75rem; padding: .4rem .65rem; border: 1px solid #d6c7b2; border-radius: .5rem; color: #4a2c2a; background: #fffdf9; cursor: pointer; font: 600 .75rem system-ui, sans-serif; }
+.select-category:hover { background: #f4e2d5; }
+.select-category:focus-visible { outline: 2px solid #8b5a2b; outline-offset: 2px; }

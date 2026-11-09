@@ -1,3 +1,5 @@
+import NotificationFactory from "./utils/notification_factory.js";
+
 // Crear una promesa que simula éxito/fallo con 50% de probabilidad
 const miPromesa = new Promise((cumplir, fallar) => {
     setTimeout(() => {
@@ -12,4 +14,10 @@ const miPromesa = new Promise((cumplir, fallar) => {
 // Consumo de la promesa con .then() y .catch()
 miPromesa
     .then(respuesta => console.log("ÉXITO:", respuesta))
-    .catch(error => console.error("ERROR:", error));
+    .catch(error => NotificationFactory.emit(document, {
+        title: "La promesa no se completó",
+        detail: String(error),
+        type: "error",
+        emitter: "Ejemplo de promesas"
+    }));
+

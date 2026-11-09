@@ -1,0 +1,17 @@
+{
+  "id": "./index.html",
+  "name": "Cafefe POS",
+  "short_name": "Cafefe POS",
+  "description": "Panel de operaciones y punto de venta para Cafefe.",
+  "lang": "es-SV",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf6f0",
+  "theme_color": "#493327",
+  "icons": [
+    { "src": "./icons/cafefe-192.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icons/cafefe-512.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icons/cafefe-maskable-512.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

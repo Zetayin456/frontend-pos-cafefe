@@ -19,8 +19,22 @@ export default class TarjetaTipoProducto extends HTMLElement {
         const badge = document.createElement("span"); badge.slot = "pie";
         badge.className = `badge${item.activo ? " active" : ""}`;
         badge.textContent = item.activo ? "Disponible" : "Inactiva";
+        const select = document.createElement("button");
+        select.type = "button";
+        select.slot = "pie";
+        select.className = "select-category";
+        select.textContent = "Seleccionar categoría";
         card.append(title, description, badge);
         this.shadowRoot.append(card);
+        card.append(select);
+        select.addEventListener("click", (event) => {
+            event.stopPropagation();
+            this.shadowRoot.dispatchEvent(new CustomEvent("cafefe-category-request", {
+                bubbles: true,
+                composed: true,
+                detail: { id: item.idTipoProducto, nombre: item.nombre }
+            }));
+        });
     }
 }
 

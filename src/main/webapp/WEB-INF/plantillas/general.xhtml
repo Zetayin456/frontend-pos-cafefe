@@ -8,14 +8,21 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#493327" />
+        <link rel="manifest" href="#{request.contextPath}/manifest.json" />
+        <link rel="icon" href="#{request.contextPath}/icons/cafefe-192.svg" type="image/svg+xml" />
         <title><ui:insert name="titulo">Sistema POS Cafefe</ui:insert></title>
         <h:outputStylesheet library="css" name="estilos.css" />
+        <h:outputStylesheet library="css" name="principal.css" />
+        <script type="module" src="#{request.contextPath}/js/pwa.js"></script>
     </h:head>
 
     <h:body>
         <p:growl id="messages" showDetail="true" life="6000">
             <p:autoUpdate />
         </p:growl>
+        <toast-center></toast-center>
 
         <!-- 1. Header (Banner dividido en 3) -->
         <header class="header-container">
@@ -26,6 +33,7 @@
                 <h1><ui:insert name="header_titulo">Gestión del Sistema</ui:insert></h1>
             </div>
             <div class="header-usuario">
+                <install-app-button></install-app-button>
                 <!-- Selector Dinámico de Idioma (i18n) -->
                 <h:form id="frmIdioma">
                     <p:selectOneMenu value="#{sesionUsuario.idiomaSeleccionado}" onchange="submit()">

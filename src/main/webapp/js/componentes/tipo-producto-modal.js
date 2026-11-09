@@ -1,4 +1,5 @@
 import TipoProductoService from "../control/tipo_producto_service.js";
+import NotificationFactory from "../utils/notification_factory.js";
 import "./tarjeta-tipo-producto.js";
 
 export default class TipoProductoModal extends HTMLElement {
@@ -9,9 +10,20 @@ export default class TipoProductoModal extends HTMLElement {
         const link = document.createElement("link"); link.rel = "stylesheet";
         link.href = new URL("../../styles/tarjeta.css", import.meta.url).href;
         const template = document.createElement("template");
-        template.innerHTML = `<section class="catalog"><div class="catalog-heading"><div><p class="eyebrow">CATÁLOGO</p><h2>Tipos de producto</h2></div><button type="button" class="refresh">Actualizar</button></div><p class="message" role="status" aria-live="polite">Cargando categorías…</p><div class="cards" aria-label="Categorías de producto"></div></section>`;
+        template.innerHTML = `<section class="catalog"><div class="catalog-heading"><div><p class="eyebrow">CATÁLOGO</p><h2>Tipos de producto</h2></div><button type="button" class="refresh">Actualizar</button></div><p class="message" role="status" aria-live="polite">Cargando categorías…</p><p class="selected" aria-live="polite">Ninguna categoría seleccionada.</p><div class="cards" aria-label="Categorías de producto"></div></section>`;
         this.shadowRoot.append(link, template.content.cloneNode(true));
         this.shadowRoot.querySelector(".refresh").addEventListener("click", () => this.load());
+        this.shadowRoot.addEventListener("cafefe-category-request", (event) => {
+            // El contenedor común detiene la burbuja del hijo y coordina al componente hermano.
+            event.stopPropagation();
+            const selection = event.detail;
+            this.shadowRoot.querySelector(".selected").textContent = `Seleccionada: ${selection.nombre}`;
+            this.shadowRoot.dispatchEvent(new CustomEvent("cafefe-category-selected", {
+                bubbles: true,
+                composed: true,
+                detail: selection
+            }));
+        });
         this.load();
     }
 
@@ -35,8 +47,15 @@ export default class TipoProductoModal extends HTMLElement {
             });
             message.textContent = `${categories.length} categorías disponibles.`;
         } catch (error) {
-            message.textContent = error?.message ?? "No se pudieron cargar las categorías.";
+            const detail = error?.message ?? "No se pudieron cargar las categorías.";
+            message.textContent = detail;
             message.classList.add("error");
+            NotificationFactory.emit(this.shadowRoot, {
+                title: "No se pudieron cargar las categorías",
+                detail,
+                type: "error",
+                emitter: "Catálogo de tipos de producto"
+            });
         }
     }
 }

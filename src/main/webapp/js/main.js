@@ -1,4 +1,6 @@
 import CajaService from "./control/caja_service.js";
+import NotificationFactory from "./utils/notification_factory.js";
+import "./pwa.js";
 import "./componentes/tipo-producto-modal.js";
 
 const cajaService = new CajaService();
@@ -24,6 +26,12 @@ function setupCajaLookup() {
             const response = await cajaService.findRange(0, Number(pageSize.value));
             feedback.textContent = `${response.datos.length} registros recibidos · ${response.totales} en total.`;
             feedback.classList.add("is-success");
+            NotificationFactory.emit(document, {
+                title: "Consulta completada",
+                detail: `Se recibieron ${response.datos.length} registros de cajas.`,
+                type: "info",
+                emitter: "Consulta de cajas"
+            });
             if (response.datos.length === 0) {
                 renderEmpty(body, "El servicio no devolvió cajas.");
             } else {
@@ -36,9 +44,16 @@ function setupCajaLookup() {
                 }
             }
         } catch (error) {
-            feedback.textContent = error instanceof Error ? error.message : error.mensaje;
+            const detail = error instanceof Error ? error.message : error.mensaje;
+            feedback.textContent = detail;
             feedback.classList.add("is-error");
             renderEmpty(body, "No se pudieron cargar los registros.");
+            NotificationFactory.emit(document, {
+                title: "Error al consultar cajas",
+                detail,
+                type: "error",
+                emitter: "Consulta de cajas"
+            });
         } finally {
             button.disabled = false;
         }
@@ -95,6 +110,12 @@ function setupCounterWorker() {
         if (!Number.isSafeInteger(initialValue) || initialValue < 0) {
             feedback.textContent = "Ingresa un número entero igual o mayor que cero.";
             feedback.className = "feedback is-error";
+            NotificationFactory.emit(document, {
+                title: "Valor no válido",
+                detail: "Ingresa un número entero igual o mayor que cero.",
+                type: "warning",
+                emitter: "Contador Web Worker"
+            });
             startInput.focus();
             return;
         }
@@ -104,6 +125,12 @@ function setupCounterWorker() {
             stop();
             feedback.textContent = "Ocurrió un error al ejecutar el Web Worker.";
             feedback.className = "feedback is-error";
+            NotificationFactory.emit(document, {
+                title: "Falló el contador",
+                detail: "Ocurrió un error al ejecutar la tarea en segundo plano.",
+                type: "error",
+                emitter: "Contador Web Worker"
+            });
         };
         worker.postMessage({ type: "start", value: initialValue });
         running = true;
