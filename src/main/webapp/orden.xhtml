@@ -14,13 +14,15 @@
 
             <p:panel header="Formulario de Orden">
                 <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="ID de orden:" />
+                    <h:outputText value="#{ordenFrm.registroSeleccionado.idOrden != null ? ordenFrm.registroSeleccionado.idOrden : 'Se asignará al guardar'}" />
+
                     <p:outputLabel for="empRol" value="Empleado (Camarero): *" />
                     <p:selectOneMenu id="empRol"
                                      value="#{ordenFrm.registroSeleccionado.idEmpleadoRol}"
                                      converter="entityConverter"
                                      required="true"
-                                     requiredMessage="Debe seleccionar un empleado con el rol Camarero"
-                                     disabled="#{ordenFrm.registroSeleccionado.idOrden != null}">
+                                     requiredMessage="Debe seleccionar un empleado con el rol Camarero">
                         <f:selectItem itemLabel="-- Seleccione Camarero --" itemValue="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{ordenFrm.listaCamareros}"
                                        var="er"
@@ -29,7 +31,7 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="fechaCreacion" value="Fecha Orden:" />
-                    <p:datePicker id="fechaCreacion" value="#{ordenFrm.registroSeleccionado.fechaCreacion}" showTime="true" required="true" disabled="#{ordenFrm.registroSeleccionado.idOrden != null}" />
+                    <p:datePicker id="fechaCreacion" value="#{ordenFrm.registroSeleccionado.fechaCreacion}" showTime="true" required="true" />
                 </h:panelGrid>
 
                 <p:separator/>
@@ -38,7 +40,7 @@
                 <p:panel header="Agregar Producto a la Orden" style="margin-bottom: 10px;">
                     <h:panelGrid columns="4" cellpadding="5">
                         <p:outputLabel for="cboProd" value="Producto:" />
-                        <p:selectOneMenu id="cboProd" value="#{ordenFrm.productoSeleccionado}" disabled="#{ordenFrm.registroSeleccionado.idOrden != null}" converter="entityConverter">
+                        <p:selectOneMenu id="cboProd" value="#{ordenFrm.productoSeleccionado}" converter="entityConverter">
                             <f:selectItem itemLabel="-- Seleccione Producto --" itemValue="#{null}" />
                             <f:selectItems value="#{ordenFrm.listaProductos}" var="p" itemLabel="#{p.nombre} ($#{p.precioSugerido})" itemValue="#{p}" />
                         </p:selectOneMenu>
@@ -48,7 +50,7 @@
                     </h:panelGrid>
                     <p:commandButton value="Agregar Producto" actionListener="#{ordenFrm.agregarProducto()}"
                                      process="@form"
-                                     update="tblDetalle cboProd obsItem" icon="pi pi-plus" styleClass="ui-button-info" />
+                                     update="tblDetalle totalActual cboProd obsItem" icon="pi pi-plus" styleClass="ui-button-info" />
                 </p:panel>
 
                 <h:panelGrid columns="1" cellpadding="5">
@@ -70,16 +72,16 @@
                     <h:outputText value="#{item.idProducto.nombre}" />
                 </p:column>
                 <p:column headerText="Precio / Monto Aplicado">
-                    <h:outputText value="#{item.precio}">
-                        <f:convertNumber type="currency" currencySymbol="$" />
-                    </h:outputText>
+                    <p:inputNumber value="#{item.precio}" decimalPlaces="2" minValue="0">
+                        <p:ajax event="change" process="@this" update=":frmOrden:totalActual" />
+                    </p:inputNumber>
                 </p:column>
                 <p:column headerText="Comentario / Observaciones">
                     <h:outputText value="#{item.observaciones}" style="font-weight: bold; color: blue;" />
                 </p:column>
                 <p:column headerText="Descuento para este producto">
                     <p:selectOneMenu value="#{item.idDescuentoProductoSeleccionado}"
-                                     disabled="#{ordenFrm.registroSeleccionado.idOrden != null or empty ordenFrm.getDescuentosDisponibles(item)}">
+                                     disabled="#{empty ordenFrm.getDescuentosDisponibles(item)}">
                         <f:selectItem itemLabel="Sin descuento" itemValue="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{ordenFrm.getDescuentosDisponibles(item)}"
                                        var="descuento"
@@ -90,16 +92,22 @@
                                      icon="pi pi-check"
                                      actionListener="#{ordenFrm.aplicarDescuentoSeleccionado(item)}"
                                      process="@form"
-                                     update="tblDetalle"
-                                     disabled="#{ordenFrm.registroSeleccionado.idOrden != null or empty ordenFrm.getDescuentosDisponibles(item)}" />
+                                     update="tblDetalle totalActual"
+                                     disabled="#{empty ordenFrm.getDescuentosDisponibles(item)}" />
                     <h:outputText value="No hay descuentos vigentes" styleClass="ui-message-warn"
                                   rendered="#{empty ordenFrm.getDescuentosDisponibles(item)}" />
                 </p:column>
                 <p:column headerText="Acción">
                     <p:commandButton icon="pi pi-trash" actionListener="#{ordenFrm.removerProducto(item)}"
-                                     update="tblDetalle" styleClass="ui-button-danger ui-button-flat" />
+                                     update="tblDetalle totalActual" styleClass="ui-button-danger ui-button-flat" />
                 </p:column>
             </p:dataTable>
+            <h:panelGroup id="totalActual" layout="block" style="text-align:right; font-weight:bold; margin-top:1rem;">
+                Total de la orden:
+                <h:outputText value="#{ordenFrm.totalActual}">
+                    <f:convertNumber type="currency" currencySymbol="$" />
+                </h:outputText>
+            </h:panelGroup>
         </h:form>
 
         <h:form id="frmListaOrdenes">

@@ -38,17 +38,18 @@ public class DescuentoProductoFrm implements Serializable {
     private DescuentoProducto registroSeleccionado;
     private UUID idDescuentoSeleccionado;
     private UUID idProductoSeleccionado;
+    private UUID idProductoMaestro;
 
     @PostConstruct
     public void init() {
-        nuevoRegistro();
-        cargarDatos();
+        this.listaDescuentoProducto = new java.util.ArrayList<>();
+        cargarPorProducto(null);
     }
 
     public void nuevoRegistro() {
         this.registroSeleccionado = new DescuentoProducto();
         this.idDescuentoSeleccionado = null;
-        this.idProductoSeleccionado = null;
+        this.idProductoSeleccionado = idProductoMaestro;
     }
 
     public void cargarDatos() {
@@ -60,6 +61,26 @@ public class DescuentoProductoFrm implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error al cargar los datos"));
         }
+    }
+
+    public void cargarPorProducto(UUID idProducto) {
+        idProductoMaestro = idProducto;
+        nuevoRegistro();
+        try {
+            listaDescuentoProducto = idProducto == null
+                    ? new java.util.ArrayList<>()
+                    : descuentoProductoRepository.buscarPorIdProducto(idProducto);
+            cargarOpciones();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+                            "No se pudieron cargar los descuentos del producto."));
+        }
+    }
+
+    private void cargarOpciones() {
+        listaDescuentos = descuentoRepository.findActivos();
+        listaProductos = productoRepository.findActivos();
     }
 
     public void seleccionarRegistro(DescuentoProducto dp) {
@@ -78,12 +99,23 @@ public class DescuentoProductoFrm implements Serializable {
                 return;
             }
 
-            Descuento desc = descuentoRepository.find(idDescuentoSeleccionado);
+            Descuento desc = listaDescuentos == null ? null : listaDescuentos.stream()
+                    .filter(item -> idDescuentoSeleccionado.equals(item.getIdDescuento()))
+                    .findFirst().orElse(null);
             Producto prod = productoRepository.find(idProductoSeleccionado);
 
             if (desc == null || prod == null) {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El Descuento o Producto seleccionado no existe"));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El descuento no está activo o el producto no existe."));
+                return;
+            }
+
+            if (!Boolean.TRUE.equals(prod.getActivo())
+                    || desc.getIdTipoDescuento() == null
+                    || !Boolean.TRUE.equals(desc.getIdTipoDescuento().getActivo())) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_WARN, "Validación",
+                                "Solo se pueden asignar productos y descuentos activos."));
                 return;
             }
 
@@ -147,7 +179,7 @@ public class DescuentoProductoFrm implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Asociación Descuento-Producto procesada correctamente"));
 
             nuevoRegistro();
-            cargarDatos();
+            cargarPorProducto(idProductoMaestro);
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null,
@@ -162,7 +194,7 @@ public class DescuentoProductoFrm implements Serializable {
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar la asignación: " + e.getMessage()));
         }
-        cargarDatos();
+        cargarPorProducto(idProductoMaestro);
     }
 
     public List<DescuentoProducto> getListaDescuentoProducto() { return listaDescuentoProducto; }
@@ -182,4 +214,5 @@ public class DescuentoProductoFrm implements Serializable {
 
     public UUID getIdProductoSeleccionado() { return idProductoSeleccionado; }
     public void setIdProductoSeleccionado(UUID idProductoSeleccionado) { this.idProductoSeleccionado = idProductoSeleccionado; }
+    public UUID getIdProductoMaestro() { return idProductoMaestro; }
 }

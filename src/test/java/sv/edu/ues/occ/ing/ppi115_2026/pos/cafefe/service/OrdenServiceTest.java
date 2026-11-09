@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.EmpleadoRolDAOInterface;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.OrdenDAOInterface;
+import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.OrdenProductoDAOInterface;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.ProductoDAOInterface;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity.EmpleadoRol;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity.Orden;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.*;
 class OrdenServiceTest {
 
     @Mock private OrdenDAOInterface ordenDAO;
+    @Mock private OrdenProductoDAOInterface ordenProductoDAO;
     @Mock private EmpleadoRolDAOInterface empleadoRolDAO;
     @Mock private ProductoDAOInterface productoDAO;
     @InjectMocks private OrdenService service;
@@ -44,6 +46,7 @@ class OrdenServiceTest {
         assertSame(orden, detalle.getIdOrden());
         assertEquals(List.of(detalle), orden.getOrdenProductoList());
         verify(ordenDAO).crear(orden);
+        verify(ordenProductoDAO).crear(detalle);
         verify(ordenDAO, never()).modificar(any());
     }
 

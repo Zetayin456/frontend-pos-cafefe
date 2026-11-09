@@ -86,4 +86,13 @@ public class OrdenProductoDAO extends DefaultDAO<OrdenProducto> implements Orden
                  .getSingleResult()
                  .intValue();
     }
+
+    @Override
+    public List<OrdenProducto> buscarPorIdOrden(UUID idOrden) {
+        if (idOrden == null) return List.of();
+        return em.createQuery("SELECT op FROM OrdenProducto op "
+                + "JOIN FETCH op.idProducto WHERE op.idOrden.idOrden = :idOrden", OrdenProducto.class)
+                .setParameter("idOrden", idOrden)
+                .getResultList();
+    }
 }

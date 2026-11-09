@@ -41,4 +41,9 @@ public class ProductoTipoProductoDAO extends DefaultDAO<ProductoTipoProducto> im
                 + "WHERE ptp.idProducto.idProducto = :idProducto", ProductoTipoProducto.class)
                 .setParameter("idProducto", idProducto).getResultList();
     }
+
+    @Override
+    public List<ProductoTipoProducto> buscarPorIdProducto(UUID idProducto) {
+        return findByProducto(idProducto);
+    }
 }

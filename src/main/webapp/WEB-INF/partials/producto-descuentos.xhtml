@@ -1,16 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="http://primefaces.org/ui">
-<h:form id="frmNuevo">
+<h:form id="frmNuevoDescuento">
             <p:panel header="Asignar descuento a producto" style="margin-top: 1rem;">
                 <h:panelGrid columns="2" cellpadding="5">
-                    <p:outputLabel value="Producto:" for="cboProducto" />
-                    <p:selectOneMenu id="cboProducto"
-                                     value="#{descuentoProductoFrm.idProductoSeleccionado}"
-                                     disabled="#{descuentoProductoFrm.registroSeleccionado.idDescuentoProducto != null}"
-                                     required="true">
-                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
-                        <f:selectItems value="#{descuentoProductoFrm.listaProductos}" var="prod"
-                                       itemLabel="#{prod.nombre}" itemValue="#{prod.idProducto}" />
-                    </p:selectOneMenu>
+                    <h:outputText value="Producto: #{productoFrm.registroSeleccionado.nombre}" />
 
                     <p:outputLabel value="Descuento:" for="cboDescuento" />
                     <p:selectOneMenu id="cboDescuento"
@@ -38,14 +30,15 @@
                 <div style="text-align: right; margin-top: 10px;">
                     <p:commandButton value="Guardar"
                                      actionListener="#{descuentoProductoFrm.guardar()}"
-                                     update=":frmTabla:tblDescuentoProducto :frmNuevo"
+                                     update="@form :detalleProducto:frmTablaDescuento:tblDescuentoProducto"
+                                     disabled="#{empty descuentoProductoFrm.idProductoMaestro or not productoFrm.registroSeleccionado.activo}"
                                      icon="pi pi-check" />
-                    <p:commandButton value="Nuevo" actionListener="#{descuentoProductoFrm.nuevoRegistro()}" update="frmNuevo" process="@this" icon="pi pi-plus" styleClass="ui-button-secondary" />
+                    <p:commandButton value="Nuevo" actionListener="#{descuentoProductoFrm.nuevoRegistro()}" update="frmNuevoDescuento" process="@this" icon="pi pi-plus" styleClass="ui-button-secondary" disabled="#{empty descuentoProductoFrm.idProductoMaestro or not productoFrm.registroSeleccionado.activo}" />
                 </div>
             </p:panel>
         </h:form>
 
-        <h:form id="frmTabla">
+        <h:form id="frmTablaDescuento">
             <p:dataTable id="tblDescuentoProducto"
                          var="dp"
                          value="#{descuentoProductoFrm.listaDescuentoProducto}"
@@ -84,9 +77,9 @@
                 <p:column headerText="Acciones">
                     <p:commandButton icon="pi pi-pencil"
                                      actionListener="#{descuentoProductoFrm.seleccionarRegistro(dp)}"
-                                     update=":frmNuevo"
+                                     update=":detalleProducto:frmNuevoDescuento"
                                      process="@this" />
-                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{descuentoProductoFrm.eliminar(dp)}" update=":frmTabla:tblDescuentoProducto">
+                    <p:commandButton icon="pi pi-trash" title="Eliminar" action="#{descuentoProductoFrm.eliminar(dp)}" update="@form">
                         <p:confirm header="Confirmar eliminación" message="¿Desea eliminar esta asignación de descuento?" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </p:column>

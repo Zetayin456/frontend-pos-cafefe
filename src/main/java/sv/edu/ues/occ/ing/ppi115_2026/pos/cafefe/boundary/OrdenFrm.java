@@ -161,10 +161,7 @@ public class OrdenFrm implements Serializable {
         cargarDatos();
 
     } catch (Exception e) {
-        mensajeError(
-                "No se pudo eliminar la orden. Puede tener restricciones "
-                + "en la base de datos."
-        );
+        mensajeError("No se puede eliminar el registro porque está siendo utilizado en el sistema.");
     }
 }
 
@@ -198,6 +195,13 @@ public class OrdenFrm implements Serializable {
     public BigDecimal totalOrden(Orden orden) {
         if (orden == null || orden.getOrdenProductoList() == null) return BigDecimal.ZERO;
         return orden.getOrdenProductoList().stream()
+                .filter(item -> item != null && item.getPrecio() != null)
+                .map(OrdenProducto::getPrecio)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getTotalActual() {
+        return itemsOrden == null ? BigDecimal.ZERO : itemsOrden.stream()
                 .filter(item -> item != null && item.getPrecio() != null)
                 .map(OrdenProducto::getPrecio)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

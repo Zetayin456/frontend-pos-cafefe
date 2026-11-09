@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.UUID;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.EmpleadoRolRepository;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.OrdenRepository;
+import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.OrdenProductoRepository;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.ProductoRepository;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity.EmpleadoRol;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity.Orden;
@@ -22,6 +22,9 @@ public class OrdenService {
 
     @Inject
     private OrdenRepository ordenRepository;
+
+    @Inject
+    private OrdenProductoRepository ordenProductoRepository;
 
     @Inject
     private EmpleadoRolRepository empleadoRolRepository;
@@ -96,13 +99,49 @@ public class OrdenService {
             detalle.setIdProducto(producto);
             detalle.setIdOrden(orden);
         }
-        orden.setOrdenProductoList(new ArrayList<>(productos));
-        if (nueva) ordenRepository.crear(orden);
-        else ordenRepository.modificar(orden);
+        List<OrdenProducto> anteriores = nueva
+                ? List.of() : ordenProductoRepository.buscarPorIdOrden(orden.getIdOrden());
+        Map<UUID, OrdenProducto> anterioresPorId = new HashMap<>();
+        for (OrdenProducto anterior : anteriores) {
+            anterioresPorId.put(anterior.getIdOrdenProducto(), anterior);
+        }
+        List<OrdenProducto> persistidos = new ArrayList<>();
+        for (OrdenProducto detalle : productos) {
+            OrdenProducto existente = anterioresPorId.remove(detalle.getIdOrdenProducto());
+            if (existente != null) {
+                existente.setIdProducto(detalle.getIdProducto());
+                existente.setPrecio(detalle.getPrecio());
+                existente.setObservaciones(detalle.getObservaciones());
+                persistidos.add(existente);
+            } else {
+                detalle.setIdOrdenProducto(UUID.randomUUID());
+                persistidos.add(detalle);
+            }
+        }
+        orden.setOrdenProductoList(persistidos);
+        Orden ordenPersistida;
+        if (nueva) {
+            ordenRepository.crear(orden);
+            ordenPersistida = orden;
+        } else {
+            ordenPersistida = ordenRepository.modificar(orden);
+        }
+        for (OrdenProducto detalle : persistidos) {
+            detalle.setIdOrden(ordenPersistida);
+            if (anterioresPorId.containsKey(detalle.getIdOrdenProducto())) continue;
+            if (anteriores.contains(detalle)) ordenProductoRepository.modificar(detalle);
+            else ordenProductoRepository.crear(detalle);
+        }
+        for (OrdenProducto removido : anterioresPorId.values()) {
+            ordenProductoRepository.eliminar(removido);
+        }
     }
 
     public void eliminar(Orden orden) {
         if (orden == null || orden.getIdOrden() == null) throw new IllegalArgumentException("Selecciona una orden válida.");
+        for (OrdenProducto detalle : ordenProductoRepository.buscarPorIdOrden(orden.getIdOrden())) {
+            ordenProductoRepository.eliminar(detalle);
+        }
         ordenRepository.eliminar(orden);
     }
 }

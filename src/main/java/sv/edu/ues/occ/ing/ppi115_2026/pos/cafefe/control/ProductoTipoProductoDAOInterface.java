@@ -8,4 +8,5 @@ import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity.ProductoTipoProducto;
 public interface ProductoTipoProductoDAOInterface extends ProductoTipoProductoRepository {
     List<ProductoTipoProducto> findAllWithRelations();
     List<ProductoTipoProducto> findByProducto(UUID idProducto);
+    List<ProductoTipoProducto> buscarPorIdProducto(UUID idProducto);
 }

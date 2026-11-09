@@ -12,26 +12,7 @@
                          styleClass="ui-fluid"
                          columnClasses="ui-grid-col-3,ui-grid-col-9">
 
-                <p:outputLabel for="producto"
-                               value="Producto:" />
-
-                <p:selectOneMenu id="producto"
-                                 value="#{productoTipoProductoFrm.idProductoSeleccionado}"
-                                 required="true"
-                                 requiredMessage="Selecciona un producto."
-                                 disabled="#{productoTipoProductoFrm.registroSeleccionado.idProductoTipoProducto != null}">
-
-                    <f:selectItem itemLabel="Selecciona un producto"
-                                  itemValue="#{null}"
-                                  noSelectionOption="true" />
-
-                    <f:selectItems
-                        value="#{productoTipoProductoFrm.listaProductos}"
-                        var="p"
-                        itemLabel="#{p.nombre}"
-                        itemValue="#{p.idProducto}" />
-
-                </p:selectOneMenu>
+                <h:outputText value="Producto seleccionado: #{productoFrm.registroSeleccionado.nombre}" />
 
                 <p:outputLabel for="tipoProducto"
                                value="Tipo de producto:" />
@@ -80,7 +61,8 @@
                 icon="pi pi-save"
                 action="#{productoTipoProductoFrm.guardar}"
                 process="@form"
-                update="@form" />
+                update="@form"
+                disabled="#{empty productoTipoProductoFrm.idProductoMaestro or not productoFrm.registroSeleccionado.activo}" />
 
             <p:commandButton
                 value="Nueva asignación / Limpiar"
@@ -88,6 +70,7 @@
                 action="#{productoTipoProductoFrm.nuevoRegistro}"
                 process="@this"
                 update="@form"
+                disabled="#{empty productoTipoProductoFrm.idProductoMaestro or not productoFrm.registroSeleccionado.activo}"
                 styleClass="ui-button-secondary"
                 style="margin-left: 8px;" />
 

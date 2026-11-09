@@ -24,7 +24,7 @@ public class DescuentoService {
     public List<DescuentoProducto> disponibles(Producto producto, Date fecha) {
         if (producto == null || producto.getIdProducto() == null || fecha == null) return List.of();
         List<DescuentoProducto> asignaciones = descuentoProductoRepository != null
-                ? descuentoProductoRepository.findByProductoWithRelations(producto.getIdProducto())
+                ? descuentoProductoRepository.buscarVigentesPorProducto(producto.getIdProducto(), fecha)
                 : producto.getDescuentoProductoList();
         if (asignaciones == null || asignaciones.isEmpty()) return List.of();
         List<DescuentoProducto> resultado = new ArrayList<>();

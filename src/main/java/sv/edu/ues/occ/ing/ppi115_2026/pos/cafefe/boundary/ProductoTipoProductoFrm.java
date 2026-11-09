@@ -45,11 +45,12 @@ public class ProductoTipoProductoFrm implements Serializable {
     private ProductoTipoProducto registroSeleccionado;
     private UUID idProductoSeleccionado;
     private UUID idTipoProductoSeleccionado;
+    private UUID idProductoMaestro;
 
     @PostConstruct
     public void init() {
-        nuevoRegistro();
-        cargarDatos();
+        listaProductoTipoProducto = new ArrayList<>();
+        cargarPorProducto(null);
     }
 
     // Cargar las asignaciones, los productos y los tipos.
@@ -80,12 +81,32 @@ public class ProductoTipoProductoFrm implements Serializable {
         }
     }
 
+    public void cargarPorProducto(UUID idProducto) {
+        idProductoMaestro = idProducto;
+        nuevoRegistro();
+        try {
+            listaProductoTipoProducto = idProducto == null
+                    ? new ArrayList<>()
+                    : productoTipoProductoRepository.buscarPorIdProducto(idProducto);
+            cargarOpciones();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al cargar tipos del producto", e);
+            mensaje(FacesMessage.SEVERITY_ERROR, "Error",
+                    "No se pudieron cargar los tipos asignados al producto.");
+        }
+    }
+
+    private void cargarOpciones() {
+        listaProductos = productoRepository.findActivos();
+        listaTiposProducto = tipoProductoRepository.findActivos();
+    }
+
     // Preparar el formulario para una asignación nueva.
     public void nuevoRegistro() {
         registroSeleccionado = new ProductoTipoProducto();
         registroSeleccionado.setFechaCreacion(new Date());
 
-        idProductoSeleccionado = null;
+        idProductoSeleccionado = idProductoMaestro;
         idTipoProductoSeleccionado = null;
     }
 
@@ -178,7 +199,7 @@ public class ProductoTipoProductoFrm implements Serializable {
             }
 
             nuevoRegistro();
-            cargarDatos();
+            cargarPorProducto(idProductoMaestro);
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE,
@@ -283,7 +304,7 @@ public class ProductoTipoProductoFrm implements Serializable {
                 nuevoRegistro();
             }
 
-            cargarDatos();
+            cargarPorProducto(idProductoMaestro);
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE,
@@ -318,6 +339,8 @@ public class ProductoTipoProductoFrm implements Serializable {
     public List<TipoProducto> getListaTiposProducto() {
         return listaTiposProducto;
     }
+
+    public UUID getIdProductoMaestro() { return idProductoMaestro; }
 
     public ProductoTipoProducto getRegistroSeleccionado() {
         return registroSeleccionado;

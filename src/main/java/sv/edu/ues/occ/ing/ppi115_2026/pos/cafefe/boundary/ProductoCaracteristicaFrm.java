@@ -39,16 +39,17 @@ public class ProductoCaracteristicaFrm implements Serializable {
     private ProductoCaracteristica registroSeleccionado;
     private UUID idProductoSeleccionado;
     private UUID idCaracteristicaSeleccionada;
+    private UUID idProductoMaestro;
 
     @PostConstruct
     public void init() {
-        nuevoRegistro();
-        cargarDatos();
+        this.listaProductoCaracteristica = new java.util.ArrayList<>();
+        cargarPorProducto(null);
     }
 
     public void nuevoRegistro() {
         this.registroSeleccionado = new ProductoCaracteristica();
-        this.idProductoSeleccionado = null;
+        this.idProductoSeleccionado = idProductoMaestro;
         this.idCaracteristicaSeleccionada = null;
     }
 
@@ -61,6 +62,26 @@ public class ProductoCaracteristicaFrm implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error al cargar la información"));
         }
+    }
+
+    public void cargarPorProducto(UUID idProducto) {
+        idProductoMaestro = idProducto;
+        nuevoRegistro();
+        try {
+            listaProductoCaracteristica = idProducto == null
+                    ? new java.util.ArrayList<>()
+                    : productoCaracteristicaRepository.buscarPorIdProducto(idProducto);
+            cargarOpciones();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+                            "No se pudieron cargar las características del producto."));
+        }
+    }
+
+    private void cargarOpciones() {
+        listaProductos = productoRepository.findActivos();
+        listaCaracteristicas = caracteristicaRepository.findActivos();
     }
 
     public void guardar() {
@@ -122,7 +143,7 @@ public class ProductoCaracteristicaFrm implements Serializable {
                             new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Característica actualizada"));
                 }
                 nuevoRegistro();
-                cargarDatos();
+                cargarPorProducto(idProductoMaestro);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Debe seleccionar un Producto y una Característica"));
@@ -149,7 +170,7 @@ public class ProductoCaracteristicaFrm implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar la asignación: " + e.getMessage()));
         }
         nuevoRegistro();
-        cargarDatos();
+        cargarPorProducto(idProductoMaestro);
     }
 
     private void mensajeError(String detalle) {
@@ -170,4 +191,5 @@ public class ProductoCaracteristicaFrm implements Serializable {
 
     public UUID getIdCaracteristicaSeleccionada() { return idCaracteristicaSeleccionada; }
     public void setIdCaracteristicaSeleccionada(UUID idCaracteristicaSeleccionada) { this.idCaracteristicaSeleccionada = idCaracteristicaSeleccionada; }
+    public UUID getIdProductoMaestro() { return idProductoMaestro; }
 }

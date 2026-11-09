@@ -68,14 +68,14 @@
                     value="Guardar producto"
                     action="#{productoFrm.guardar}"
                     process="@form"
-                    update="@form"
+                    update="@form :detalleProducto"
                     icon="pi pi-save" />
 
                 <p:commandButton
                     value="Nuevo / Limpiar"
                     action="#{productoFrm.nuevoRegistro}"
                     process="@this"
-                    update="@form"
+                    update="@form :detalleProducto"
                     immediate="true"
                     icon="pi pi-plus"
                     styleClass="ui-button-secondary" />
@@ -122,7 +122,7 @@
                             title="Editar"
                             action="#{productoFrm.seleccionar(p)}"
                             process="@this"
-                            update=":frmProducto"
+                            update=":frmProducto :detalleProducto"
                             styleClass="ui-button-warning" />
 
                         <p:commandButton
@@ -130,7 +130,7 @@
                             title="Eliminar"
                             action="#{productoFrm.eliminar(p)}"
                             process="@this"
-                            update=":frmProducto"
+                            update=":frmProducto :detalleProducto"
                             styleClass="ui-button-danger">
 
                             <p:confirm

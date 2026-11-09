@@ -15,6 +15,9 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.control.ProductoRepository;
+import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.boundary.ProductoTipoProductoFrm;
+import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.boundary.ProductoCaracteristicaFrm;
+import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.boundary.DescuentoProductoFrm;
 import sv.edu.ues.occ.ing.ppi115_2026.pos.cafefe.entity.Producto;
 
 @Named(value = "productoFrm")
@@ -29,6 +32,15 @@ public class ProductoFrm implements Serializable {
     @Inject
     private ProductoRepository productoRepository;
 
+    @Inject @Named("productoTipoProductoFrm")
+    private ProductoTipoProductoFrm tipoProductoFrm;
+
+    @Inject @Named("productoCaracteristicaFrm")
+    private ProductoCaracteristicaFrm caracteristicaFrm;
+
+    @Inject @Named("descuentoProductoFrm")
+    private DescuentoProductoFrm descuentoProductoFrm;
+
     private List<Producto> listaProductos;
     private Producto registroSeleccionado;
 
@@ -41,6 +53,7 @@ public class ProductoFrm implements Serializable {
     public void nuevoRegistro() {
         registroSeleccionado = new Producto();
         registroSeleccionado.setActivo(true);
+        refrescarAsignaciones();
     }
 
     public void cargarDatos() {
@@ -69,6 +82,7 @@ public class ProductoFrm implements Serializable {
         registroSeleccionado.setPrecioSugerido(producto.getPrecioSugerido());
         registroSeleccionado.setActivo(producto.getActivo());
         registroSeleccionado.setComentarios(producto.getComentarios());
+        refrescarAsignaciones();
     }
 
     public void guardar() {
@@ -120,8 +134,8 @@ public class ProductoFrm implements Serializable {
                         "Éxito", "Producto actualizado correctamente.");
             }
 
-            nuevoRegistro();
             cargarDatos();
+            refrescarAsignaciones();
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al guardar producto", e);
@@ -147,6 +161,7 @@ public class ProductoFrm implements Serializable {
             }
 
             cargarDatos();
+            refrescarAsignaciones();
 
             mensaje(FacesMessage.SEVERITY_INFO,
                     "Éxito", "Producto eliminado correctamente.");
@@ -156,6 +171,14 @@ public class ProductoFrm implements Serializable {
             mensaje(FacesMessage.SEVERITY_ERROR,
                     "Error", "No se pudo eliminar el producto. Puede estar asociado a otros registros.");
         }
+    }
+
+    private void refrescarAsignaciones() {
+        UUID idProducto = registroSeleccionado != null
+                ? registroSeleccionado.getIdProducto() : null;
+        if (tipoProductoFrm != null) tipoProductoFrm.cargarPorProducto(idProducto);
+        if (caracteristicaFrm != null) caracteristicaFrm.cargarPorProducto(idProducto);
+        if (descuentoProductoFrm != null) descuentoProductoFrm.cargarPorProducto(idProducto);
     }
 
     private void mensaje(FacesMessage.Severity severidad,
